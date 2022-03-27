@@ -51,7 +51,9 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "AuthPopupForm";
-            this.Text = "AuthPopupForm";
+            this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Google Authentication";
             this.ResumeLayout(false);
 
         }
