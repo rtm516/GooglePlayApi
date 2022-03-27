@@ -49,15 +49,34 @@ namespace Bootstrap
                 Console.WriteLine(ex.Message);
             }
 
-
-            DetailsResponse appDetails = await new AppDetailsHelper(authData, new HttpClient()).GetAppByPackageName("com.mojang.minecraftedu");
-            Console.WriteLine($"{appDetails.Item.Title} by {appDetails.Item.Creator} - {appDetails.Item.Details.AppDetails.VersionString} ({appDetails.Item.Details.AppDetails.VersionCode})");
-
+            AppDetailsHelper appDetailsHelper = new AppDetailsHelper(authData, new HttpClient());
             PurchaseHelper purchaseHelper = new PurchaseHelper(authData, new HttpClient());
 
+            // Get package info
+            DetailsResponse appDetails = await appDetailsHelper.GetAppByPackageName("com.mojang.minecraftedu");
+            Console.WriteLine($"{appDetails.Item.Title} by {appDetails.Item.Creator} - {appDetails.Item.Details.AppDetails.VersionString} ({appDetails.Item.Details.AppDetails.VersionCode})");
+
+            // 'Buy' the free app if needed
             BuyResponse appBuy = await purchaseHelper.GetBuyResponse(appDetails.Item.Details.AppDetails.PackageName, appDetails.Item.Details.AppDetails.VersionCode, appDetails.Item.Offer[0].OfferType);
             //Console.WriteLine(appBuy);
 
+            // Get the new app details
+            appDetails = await appDetailsHelper.GetAppByPackageName("com.mojang.minecraftedu");
+
+            // Check if there is a beta/testing program
+            if (appDetails.Item.Details.AppDetails.TestingProgramInfo != null)
+            {
+                // If we are not in it join
+                Console.WriteLine($"In beta: {appDetails.Item.Details.AppDetails.TestingProgramInfo.Subscribed}");
+                if (!appDetails.Item.Details.AppDetails.TestingProgramInfo.Subscribed)
+                {
+                    Console.WriteLine("Subscribing to beta");
+                    TestingProgramResponse testingProgram = await appDetailsHelper.TestingProgram(appDetails.Item.Details.AppDetails.PackageName, false);
+                    Console.WriteLine(testingProgram.Result.Details);
+                }
+            }
+
+            // Get the delivery details for download
             DeliveryResponse appDelivery = await purchaseHelper.GetDeliveryResponse(appDetails.Item.Details.AppDetails.PackageName, appDetails.Item.Details.AppDetails.VersionCode, appDetails.Item.Offer[0].OfferType);
             //Console.WriteLine(appDelivery);
 

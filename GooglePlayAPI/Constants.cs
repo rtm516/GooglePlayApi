@@ -13,6 +13,7 @@
         public const string URL_TOC = URL_FDFE + "toc";
         public const string URL_TOS_ACCEPT = URL_FDFE + "acceptTos";
         public const string URL_USER_PROFILE = URL_FDFE + "api/userProfile";
+        public const string URL_TESTING_PROGRAM = URL_FDFE + "apps/testingProgram";
 
         public const int BUILD_VERSION_SDK = 28;
         public const int PLAY_SERVICES_VERSION_CODE = 19629032;
