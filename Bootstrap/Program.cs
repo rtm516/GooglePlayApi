@@ -17,7 +17,7 @@ namespace Bootstrap
         async static Task Main(string[] args)
         {
             string cacheFile = "AuthData.json";
-            string deviceProperties = "violet.properties";
+            string deviceProperties = "octopus.properties";
             JsonSerializerOptions serializeOptions = new JsonSerializerOptions { Converters = { new CultureInfoJsonConverter() } };
 
             AuthData authData;
@@ -50,10 +50,15 @@ namespace Bootstrap
             }
 
 
-            DetailsResponse appDetails = await new AppDetailsHelper(authData, new HttpClient()).GetAppByPackageName("com.mojang.minecraftpe");
+            DetailsResponse appDetails = await new AppDetailsHelper(authData, new HttpClient()).GetAppByPackageName("com.mojang.minecraftedu");
             Console.WriteLine($"{appDetails.Item.Title} by {appDetails.Item.Creator} - {appDetails.Item.Details.AppDetails.VersionString} ({appDetails.Item.Details.AppDetails.VersionCode})");
 
-            DeliveryResponse appDelivery = await new PurchaseHelper(authData, new HttpClient()).GetDeliveryResponse(appDetails.Item.Details.AppDetails.PackageName, appDetails.Item.Details.AppDetails.VersionCode, appDetails.Item.Offer[0].OfferType);
+            PurchaseHelper purchaseHelper = new PurchaseHelper(authData, new HttpClient());
+
+            BuyResponse appBuy = await purchaseHelper.GetBuyResponse(appDetails.Item.Details.AppDetails.PackageName, appDetails.Item.Details.AppDetails.VersionCode, appDetails.Item.Offer[0].OfferType);
+            //Console.WriteLine(appBuy);
+
+            DeliveryResponse appDelivery = await purchaseHelper.GetDeliveryResponse(appDetails.Item.Details.AppDetails.PackageName, appDetails.Item.Details.AppDetails.VersionCode, appDetails.Item.Offer[0].OfferType);
             //Console.WriteLine(appDelivery);
 
             string apkFolder = "./" + appDetails.Item.Details.AppDetails.PackageName + "/";
