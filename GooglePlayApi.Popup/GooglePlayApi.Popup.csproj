@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="cef.redist.x64" Version="99.2.12" />
+    <PackageReference Include="cef.redist.x86" Version="99.2.12" />
+    <PackageReference Include="CefSharp.Common.NETCore" Version="99.2.120" />
+    <PackageReference Include="CefSharp.WinForms.NETCore" Version="99.2.120" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="AuthPopupForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>
