@@ -24,8 +24,8 @@ namespace Bootstrap
 
             if (!File.Exists(cacheFile))
             {
-                // cookie `oauth_token` from https://accounts.google.com/EmbeddedSetup/identifier?flowName=EmbeddedSetupAndroid
-                authData = await AuthHelper.Build("rtm615@gmail.com", AuthPopupForm.GetOauthToken(), deviceProperties);
+                (string Email, string OauthToken) authResponse = AuthPopupForm.GetOAuthToken();
+                authData = await AuthHelper.Build(authResponse.Email, authResponse.OauthToken, deviceProperties);
             }
             else
             {

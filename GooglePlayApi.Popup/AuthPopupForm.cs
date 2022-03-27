@@ -16,7 +16,8 @@ namespace GooglePlayApi.Popup
 {
     public partial class AuthPopupForm : Form
     {
-        private static string OauthToken { get; set; }
+        private static string OAuthToken { get; set; } = "";
+        private static string Email { get; set; } = "";
 
         public AuthPopupForm()
         {
@@ -26,14 +27,14 @@ namespace GooglePlayApi.Popup
 
             InitializeComponent();
 
-            this.chromiumWebBrowser1.LoadUrl("https://accounts.google.com/EmbeddedSetup/identifier?flowName=EmbeddedSetupAndroid");
+            chromiumWebBrowser1.LoadUrl("https://accounts.google.com/EmbeddedSetup/identifier?flowName=EmbeddedSetupAndroid");
         }
 
         private void chromiumWebBrowser1_LoadingStateChanged(object sender, LoadingStateChangedEventArgs e)
         {
             if (e.IsLoading) return;
 
-            var visitor = new CookieMonster(all_cookies =>
+            var visitor = new CookieMonster(async all_cookies =>
             {
                 var sb = new StringBuilder();
                 foreach (var nameValue in all_cookies)
@@ -41,7 +42,9 @@ namespace GooglePlayApi.Popup
                     if (nameValue.Item1 == "oauth_token")
                     {
                         this.DialogResult = DialogResult.OK;
-                        OauthToken = nameValue.Item2;
+                        OAuthToken = nameValue.Item2;
+                        JavascriptResponse response = await chromiumWebBrowser1.EvaluateScriptAsync("document.getElementById('profileIdentifier').innerHTML");
+                        Email = (string)response.Result;
                         BeginInvoke(new MethodInvoker(() =>
                         {
                             this.Close();
@@ -53,15 +56,12 @@ namespace GooglePlayApi.Popup
             Cef.GetGlobalCookieManager().VisitAllCookies(visitor);
         }
 
-        public static string GetOauthToken()
+        public static (string Email, string OauthToken) GetOAuthToken()
         {
             AuthPopupForm popupForm = new AuthPopupForm();
-            if (popupForm.ShowDialog() == DialogResult.OK)
-            {
-                return OauthToken;
-            }
+            popupForm.ShowDialog();
 
-            return "";
+            return (Email: Email, OAuthToken: OAuthToken);
         }
     }
 }
