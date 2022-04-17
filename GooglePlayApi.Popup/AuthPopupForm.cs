@@ -56,7 +56,7 @@ namespace GooglePlayApi.Popup
             Cef.GetGlobalCookieManager().VisitAllCookies(visitor);
         }
 
-        public static (string Email, string OauthToken) GetOAuthToken()
+        public static (string Email, string OAuthToken) GetOAuthToken()
         {
             AuthPopupForm popupForm = new AuthPopupForm();
             popupForm.ShowDialog();
