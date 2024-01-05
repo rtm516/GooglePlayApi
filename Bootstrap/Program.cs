@@ -17,15 +17,15 @@ namespace Bootstrap
         async static Task Main(string[] args)
         {
             string cacheFile = "AuthData.json";
-            string deviceProperties = "octopus.properties";
+            string deviceProperties = "violet.properties";
             JsonSerializerOptions serializeOptions = new JsonSerializerOptions { Converters = { new CultureInfoJsonConverter() } };
 
             AuthData authData;
 
             if (!File.Exists(cacheFile))
             {
-                (string Email, string OauthToken) authResponse = AuthPopupForm.GetOAuthToken();
-                authData = await AuthHelper.Build(authResponse.Email, authResponse.OauthToken, deviceProperties);
+                (string Email, string OAuthToken) authResponse = AuthPopupForm.GetOAuthToken();
+                authData = await AuthHelper.Build(authResponse.Email, authResponse.OAuthToken, deviceProperties);
             }
             else
             {
@@ -34,8 +34,16 @@ namespace Bootstrap
                     authData = await JsonSerializer.DeserializeAsync<AuthData>(readStream, serializeOptions);
 
                 // Re-aquire tokens
-                // TODO: Check if they are still valid
-                authData = await AuthHelper.Build(authData.Email, authData.AasToken, deviceProperties);
+                try
+                {
+                    authData = await AuthHelper.Build(authData.Email, authData.AasToken, deviceProperties);
+                }
+                catch (Exception ex)
+                {
+                    // Auth failed so request new auth as its likely expired
+                    (string Email, string OAuthToken) authResponse = AuthPopupForm.GetOAuthToken();
+                    authData = await AuthHelper.Build(authResponse.Email, authResponse.OAuthToken, deviceProperties);
+                }
             }
 
             // Save latest auth to cache file
@@ -57,11 +65,11 @@ namespace Bootstrap
             Console.WriteLine($"{appDetails.Item.Title} by {appDetails.Item.Creator} - {appDetails.Item.Details.AppDetails.VersionString} ({appDetails.Item.Details.AppDetails.VersionCode})");
 
             // 'Buy' the free app if needed
-            BuyResponse appBuy = await purchaseHelper.GetBuyResponse(appDetails.Item.Details.AppDetails.PackageName, appDetails.Item.Details.AppDetails.VersionCode, appDetails.Item.Offer[0].OfferType);
+            //BuyResponse appBuy = await purchaseHelper.GetBuyResponse(appDetails.Item.Details.AppDetails.PackageName, appDetails.Item.Details.AppDetails.VersionCode, appDetails.Item.Offer[0].OfferType);
             //Console.WriteLine(appBuy);
 
             // Get the new app details
-            appDetails = await appDetailsHelper.GetAppByPackageName("com.mojang.minecraftedu");
+            //appDetails = await appDetailsHelper.GetAppByPackageName("com.mojang.minecraftedu");
 
             // Check if there is a beta/testing program
             if (appDetails.Item.Details.AppDetails.TestingProgramInfo != null)

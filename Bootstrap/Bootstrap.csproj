@@ -12,6 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="crackling.properties">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="cloudbook.properties">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -21,6 +24,18 @@
     <None Update="violet.properties">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-arm64" Version="120.1.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-x64" Version="120.1.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="chromiumembeddedframework.runtime.win-x86" Version="120.1.10" />
   </ItemGroup>
 
 </Project>
