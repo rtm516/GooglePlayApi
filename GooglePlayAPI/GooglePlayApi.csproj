@@ -4,6 +4,13 @@
     <TargetFramework>net6.0</TargetFramework>
     <Platforms>AnyCPU;x64</Platforms>
 	<OutputType>Library</OutputType>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<Title>$(AssemblyName)</Title>
+	<Authors>rtm516</Authors>
+	<RepositoryUrl>https://github.com/rtm516/GooglePlayApi</RepositoryUrl>
+	<PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+	<PackageTags>GooglePlay,PlayStore,API,Android</PackageTags>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
