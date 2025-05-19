@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -15,10 +15,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="cef.redist.x64" Version="120.1.10" />
-    <PackageReference Include="cef.redist.x86" Version="120.1.10" />
-    <PackageReference Include="CefSharp.Common.NETCore" Version="120.1.110" />
-    <PackageReference Include="CefSharp.WinForms.NETCore" Version="120.1.110" />
+    <PackageReference Include="CefSharp.Common.NETCore" Version="136.1.40" />
+    <PackageReference Include="CefSharp.WinForms.NETCore" Version="136.1.40" />
+    <PackageReference Include="chromiumembeddedframework.runtime" Version="136.1.4" />
   </ItemGroup>
 
   <ItemGroup>
